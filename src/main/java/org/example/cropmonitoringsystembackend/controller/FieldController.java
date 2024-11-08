@@ -105,8 +105,7 @@ public class FieldController {
             @RequestParam(value = "fieldLocation", required = false) String fieldLocation,
             @RequestParam(value = "extentSize", required = false) Double extentSize,
             @RequestParam(value = "fieldImage1", required = false) MultipartFile fieldImage1,
-            @RequestParam(value = "fieldImage2", required = false) MultipartFile fieldImage2,
-            HttpServletRequest request
+            @RequestParam(value = "fieldImage2", required = false) MultipartFile fieldImage2
     ) {
         try {
             FieldDTO fieldDTO = new FieldDTO();

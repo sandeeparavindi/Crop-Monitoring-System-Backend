@@ -7,12 +7,14 @@ import org.example.cropmonitoringsystembackend.dao.FieldDAO;
 import org.example.cropmonitoringsystembackend.dto.impl.FieldDTO;
 import org.example.cropmonitoringsystembackend.entity.impl.Field;
 import org.example.cropmonitoringsystembackend.exception.DataPersistException;
+import org.example.cropmonitoringsystembackend.exception.FieldNotFoundException;
 import org.example.cropmonitoringsystembackend.service.FieldService;
 import org.example.cropmonitoringsystembackend.util.Mapping;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -50,7 +52,12 @@ public class FieldServiceIMPL implements FieldService {
 
     @Override
     public void deleteField(String fieldCode) {
-
+        Optional<Field> selectedField = fieldDAO.findById(fieldCode);
+        if(!selectedField.isPresent()){
+            throw new FieldNotFoundException(fieldCode);
+        } else {
+            fieldDAO.deleteById(fieldCode);
+        }
     }
 
     @Override

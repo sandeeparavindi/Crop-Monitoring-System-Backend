@@ -3,15 +3,15 @@ package org.example.cropmonitoringsystembackend.dto.impl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.cropmonitoringsystembackend.customObj.FieldResponse;
 import org.example.cropmonitoringsystembackend.dto.FieldStatus;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class FieldDTO  implements FieldStatus {
+public class FieldDTO  implements FieldStatus, FieldResponse {
     private String fieldCode;
     private String fieldName;
     private String fieldLocation;

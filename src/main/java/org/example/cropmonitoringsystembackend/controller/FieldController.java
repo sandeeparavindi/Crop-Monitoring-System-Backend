@@ -3,6 +3,7 @@ package org.example.cropmonitoringsystembackend.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.cropmonitoringsystembackend.customObj.FieldErrorResponse;
+import org.example.cropmonitoringsystembackend.customObj.FieldResponse;
 import org.example.cropmonitoringsystembackend.dto.impl.FieldDTO;
 import org.example.cropmonitoringsystembackend.exception.DataPersistException;
 import org.example.cropmonitoringsystembackend.service.FieldService;
@@ -62,20 +63,26 @@ public class FieldController {
 
             fieldService.saveField(fieldDTO);
 
-            return new ResponseEntity<>(new FieldErrorResponse("success",
+            return new ResponseEntity<>(new FieldErrorResponse(0,
                     "Field saved successfully"), HttpStatus.CREATED);
 
         } catch (DataPersistException e) {
-            return new ResponseEntity<>(new FieldErrorResponse("error",
+            return new ResponseEntity<>(new FieldErrorResponse(0,
                     "Failed to save field: " + e.getMessage()), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new FieldErrorResponse("error",
+            return new ResponseEntity<>(new FieldErrorResponse(0,
                     "Internal server error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @GetMapping(value = "allFields", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FieldDTO> getAllFields() {
         return fieldService.getAllFields();
+    }
+
+    @GetMapping(value = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public FieldResponse getSelectedField(@PathVariable("code") String code) {
+        return fieldService.getSelectedField(code);
     }
 }

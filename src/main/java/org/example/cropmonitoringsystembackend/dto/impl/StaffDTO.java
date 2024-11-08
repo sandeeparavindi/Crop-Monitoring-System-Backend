@@ -25,5 +25,5 @@ public class StaffDTO implements StaffStatus {
     private String contactNo;
     private String email;
     private String vehicleCode;
-    private List<FieldDTO> fieldList = new ArrayList<>();;
+    private List<FieldDTO> fieldList = new ArrayList<>();
 }

@@ -66,12 +66,25 @@ public class FieldServiceIMPL implements FieldService {
         if (!tmpField.isPresent()) {
             throw new FieldNotFoundException("Field not found");
         } else {
-            tmpField.get().setFieldCode(fieldDTO.getFieldCode());
-            tmpField.get().setFieldName(fieldDTO.getFieldName());
-            tmpField.get().setFieldLocation(fieldDTO.getFieldLocation());
-            tmpField.get().setExtentSize(fieldDTO.getExtentSize());
-            tmpField.get().setFieldImage1(fieldDTO.getFieldImage1());
-            tmpField.get().setFieldImage2(fieldDTO.getFieldImage2());
+            Field existingField = tmpField.get();
+
+            if (fieldDTO.getFieldName() != null) {
+                existingField.setFieldName(fieldDTO.getFieldName());
+            }
+            if (fieldDTO.getFieldLocation() != null) {
+                existingField.setFieldLocation(fieldDTO.getFieldLocation());
+            }
+            if (fieldDTO.getExtentSize() != null) {
+                existingField.setExtentSize(fieldDTO.getExtentSize());
+            }
+            if (fieldDTO.getFieldImage1() != null) {
+                existingField.setFieldImage1(fieldDTO.getFieldImage1());
+            }
+            if (fieldDTO.getFieldImage2() != null) {
+                existingField.setFieldImage2(fieldDTO.getFieldImage2());
+            }
+            fieldDAO.save(existingField);
         }
     }
+
 }

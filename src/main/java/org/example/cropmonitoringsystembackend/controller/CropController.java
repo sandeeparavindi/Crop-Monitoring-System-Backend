@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "api/v1/crops")
 @RequiredArgsConstructor
@@ -64,4 +66,10 @@ public class CropController {
                     "Internal server error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(value = "allcrops", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CropDTO> getAllCrops() {
+        return cropService.getAllCrops();
+    }
+
 }

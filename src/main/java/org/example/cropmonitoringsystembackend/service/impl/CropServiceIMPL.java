@@ -45,7 +45,8 @@ public class CropServiceIMPL implements CropService {
 
     @Override
     public List<CropDTO> getAllCrops() {
-        return List.of();
+        List<Crop> getAllcrops = cropDAO.findAll();
+        return mapping.convertToCropListDTO(getAllcrops);
     }
 
     @Override

@@ -42,8 +42,9 @@ public class CropServiceIMPL implements CropService {
     }
 
     @Override
-    public CropResponse getSelectedCrop(String cropCode) {
-        return null;
+    public List<CropDTO> searchCrops(String cropCode, String cropCommonName) {
+        List<Crop> crops = cropDAO.findByCropCodeOrCropCommonName(cropCode, cropCommonName);
+        return mapping.convertToCropListDTO(crops);
     }
 
     @Override

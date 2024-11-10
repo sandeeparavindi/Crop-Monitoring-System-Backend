@@ -34,7 +34,8 @@ public class VehicleServiceIMPL implements VehicleService {
 
     @Override
     public List<VehicleDTO> searchVehicles(String vehicleCode, String vehicleCategory) {
-        return List.of();
+        List<Vehicle> vehicles = vehicleDAO.findByVehicleCodeOrVehicleCategory(vehicleCode, vehicleCategory);
+        return mapping.convertToVehicleListDTO(vehicles);
     }
 
     @Override

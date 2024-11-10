@@ -1,7 +1,6 @@
 package org.example.cropmonitoringsystembackend.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.cropmonitoringsystembackend.customObj.CropResponse;
 import org.example.cropmonitoringsystembackend.dao.CropDAO;
 import org.example.cropmonitoringsystembackend.dao.FieldDAO;
 import org.example.cropmonitoringsystembackend.dto.impl.CropDTO;
@@ -9,7 +8,6 @@ import org.example.cropmonitoringsystembackend.entity.impl.Crop;
 import org.example.cropmonitoringsystembackend.entity.impl.Field;
 import org.example.cropmonitoringsystembackend.exception.CropNotFoundException;
 import org.example.cropmonitoringsystembackend.exception.DataPersistException;
-import org.example.cropmonitoringsystembackend.exception.FieldNotFoundException;
 import org.example.cropmonitoringsystembackend.service.CropService;
 import org.example.cropmonitoringsystembackend.util.Mapping;
 import org.springframework.stereotype.Service;

@@ -2,8 +2,10 @@ package org.example.cropmonitoringsystembackend.util;
 
 import org.example.cropmonitoringsystembackend.dto.impl.CropDTO;
 import org.example.cropmonitoringsystembackend.dto.impl.FieldDTO;
+import org.example.cropmonitoringsystembackend.dto.impl.VehicleDTO;
 import org.example.cropmonitoringsystembackend.entity.impl.Crop;
 import org.example.cropmonitoringsystembackend.entity.impl.Field;
+import org.example.cropmonitoringsystembackend.entity.impl.Vehicle;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +38,16 @@ public class Mapping {
     }
     public List<CropDTO> convertToCropListDTO(List<Crop> crops) {
         return modelMapper.map(crops, new TypeToken<List<CropDTO>>() {}.getType());
+    }
+
+    // vehicle matters mapping
+    public VehicleDTO convertToVehicleDTO(Vehicle vehicle) {
+        return modelMapper.map(vehicle, VehicleDTO.class);
+    }
+    public Vehicle convertToVehicle(VehicleDTO vehicleDTO) {
+        return modelMapper.map(vehicleDTO, Vehicle.class);
+    }
+    public List<VehicleDTO> convertToVehicleListDTO(List<Vehicle> vehicles) {
+        return modelMapper.map(vehicles, new TypeToken<List<VehicleDTO>>() {}.getType());
     }
 }

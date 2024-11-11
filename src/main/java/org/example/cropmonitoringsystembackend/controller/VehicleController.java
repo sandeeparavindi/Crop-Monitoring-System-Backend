@@ -52,11 +52,9 @@ public class VehicleController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<VehicleDTO>> searchVehicles(
-            @RequestParam(value = "vehicleCode", required = false) String vehicleCode,
-            @RequestParam(value = "vehicleCategory", required = false) String vehicleCategory) {
-        List<VehicleDTO> crops = vehicleService.searchVehicles(vehicleCode, vehicleCategory);
-        return new ResponseEntity<>(crops, HttpStatus.OK);
+    public ResponseEntity<List<VehicleDTO>> searchVehicles(@RequestParam("searchTerm") String searchTerm) {
+        List<VehicleDTO> vehicleDTOS = vehicleService.searchVehicles(searchTerm);
+        return new ResponseEntity<>(vehicleDTOS, HttpStatus.OK);
     }
 
 

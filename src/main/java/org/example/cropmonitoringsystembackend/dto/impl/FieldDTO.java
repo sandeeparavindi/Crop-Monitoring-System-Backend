@@ -20,4 +20,5 @@ public class FieldDTO  implements FieldStatus, FieldResponse {
     private String fieldImage2;
     private List<CropDTO> crops = new ArrayList<>();
     private List<StaffDTO> staffList = new ArrayList<>();
+    private List<EquipmentDTO> equipmentList = new ArrayList<>();
 }

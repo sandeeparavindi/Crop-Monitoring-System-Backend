@@ -57,7 +57,6 @@ public class VehicleController {
         return new ResponseEntity<>(vehicleDTOS, HttpStatus.OK);
     }
 
-
     @PatchMapping(value = "/{vehicleCode}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateSelectedVehicle(
             @PathVariable("vehicleCode") String vehicleCode,

@@ -2,6 +2,7 @@ package org.example.cropmonitoringsystembackend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.cropmonitoringsystembackend.dto.impl.StaffDTO;
+import org.example.cropmonitoringsystembackend.exception.CropNotFoundException;
 import org.example.cropmonitoringsystembackend.exception.DataPersistException;
 import org.example.cropmonitoringsystembackend.service.StaffService;
 import org.springframework.http.HttpStatus;
@@ -37,5 +38,17 @@ public class StaffController {
     @GetMapping(value = "allstaff", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<StaffDTO> getAllStaffMember() {
         return staffService.getAllStaffs();
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteSelectedMember(@PathVariable("id") String id) {
+        try {
+            staffService.deleteStaff(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (CropNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

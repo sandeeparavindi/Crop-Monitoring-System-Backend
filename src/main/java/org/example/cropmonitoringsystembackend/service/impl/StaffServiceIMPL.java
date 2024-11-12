@@ -7,12 +7,14 @@ import org.example.cropmonitoringsystembackend.dto.impl.StaffDTO;
 import org.example.cropmonitoringsystembackend.entity.impl.Staff;
 import org.example.cropmonitoringsystembackend.entity.impl.Vehicle;
 import org.example.cropmonitoringsystembackend.exception.DataPersistException;
+import org.example.cropmonitoringsystembackend.exception.StaffMemberNotFoundException;
 import org.example.cropmonitoringsystembackend.service.StaffService;
 import org.example.cropmonitoringsystembackend.util.Mapping;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -45,7 +47,12 @@ public class StaffServiceIMPL implements StaffService {
 
     @Override
     public void deleteStaff(String id) {
-
+        Optional<Staff> selectedMember = staffDAO.findById(id);
+        if(!selectedMember.isPresent()){
+            throw new StaffMemberNotFoundException(id);
+        } else {
+            staffDAO.deleteById(id);
+        }
     }
 
     @Override

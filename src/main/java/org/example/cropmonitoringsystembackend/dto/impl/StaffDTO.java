@@ -3,6 +3,7 @@ package org.example.cropmonitoringsystembackend.dto.impl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.cropmonitoringsystembackend.customObj.StaffResponse;
 import org.example.cropmonitoringsystembackend.dto.StaffStatus;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class StaffDTO implements StaffStatus {
+public class StaffDTO implements StaffStatus, StaffResponse {
     private String id;
     private String firstName;
     private String lastName;

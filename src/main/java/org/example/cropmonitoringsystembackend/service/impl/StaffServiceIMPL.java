@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.cropmonitoringsystembackend.dao.StaffDAO;
 import org.example.cropmonitoringsystembackend.dao.VehicleDAO;
 import org.example.cropmonitoringsystembackend.dto.impl.StaffDTO;
-import org.example.cropmonitoringsystembackend.entity.impl.Crop;
 import org.example.cropmonitoringsystembackend.entity.impl.Staff;
 import org.example.cropmonitoringsystembackend.entity.impl.Vehicle;
 import org.example.cropmonitoringsystembackend.exception.DataPersistException;

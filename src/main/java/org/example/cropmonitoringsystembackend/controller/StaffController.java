@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "api/v1/staff")
 @RequiredArgsConstructor
@@ -30,5 +32,10 @@ public class StaffController {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
+    }
+
+    @GetMapping(value = "allstaff", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<StaffDTO> getAllStaffMember() {
+        return staffService.getAllStaffs();
     }
 }

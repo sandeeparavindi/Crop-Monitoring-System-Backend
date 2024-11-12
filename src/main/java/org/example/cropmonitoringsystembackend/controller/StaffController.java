@@ -69,4 +69,10 @@ public class StaffController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping()
+    public ResponseEntity<List<StaffDTO>> searchStaffMember(@RequestParam("searchTerm") String searchTerm) {
+        List<StaffDTO> staffDTOS = staffService.searchStaff(searchTerm);
+        return new ResponseEntity<>(staffDTOS, HttpStatus.OK);
+    }
 }

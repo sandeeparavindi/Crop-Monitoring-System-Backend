@@ -106,6 +106,7 @@ public class StaffServiceIMPL implements StaffService {
 
     @Override
     public List<StaffDTO> searchStaff(String searchTerm) {
-        return List.of();
+        List<Staff> members = staffDAO.findByIdOrFirstName(searchTerm);
+        return mapping.convertToStaffListDTO(members);
     }
 }

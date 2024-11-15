@@ -2,7 +2,6 @@ package org.example.cropmonitoringsystembackend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.cropmonitoringsystembackend.dto.impl.StaffDTO;
-import org.example.cropmonitoringsystembackend.dto.impl.VehicleDTO;
 import org.example.cropmonitoringsystembackend.exception.CropNotFoundException;
 import org.example.cropmonitoringsystembackend.exception.DataPersistException;
 import org.example.cropmonitoringsystembackend.exception.VehicleNotFoundException;

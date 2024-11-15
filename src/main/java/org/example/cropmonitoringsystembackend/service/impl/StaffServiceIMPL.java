@@ -8,6 +8,7 @@ import org.example.cropmonitoringsystembackend.entity.impl.Staff;
 import org.example.cropmonitoringsystembackend.entity.impl.Vehicle;
 import org.example.cropmonitoringsystembackend.exception.DataPersistException;
 import org.example.cropmonitoringsystembackend.exception.StaffMemberNotFoundException;
+import org.example.cropmonitoringsystembackend.exception.VehicleNotFoundException;
 import org.example.cropmonitoringsystembackend.service.StaffService;
 import org.example.cropmonitoringsystembackend.util.Mapping;
 import org.springframework.stereotype.Service;
@@ -100,6 +101,11 @@ public class StaffServiceIMPL implements StaffService {
         }
         if (staffDTO.getEmail() != null) {
             existingStaff.setEmail(staffDTO.getEmail());
+        }
+        if (staffDTO.getVehicleCode() != null) {
+            Vehicle vehicle = vehicleDAO.findById(staffDTO.getVehicleCode())
+                    .orElseThrow(() -> new VehicleNotFoundException("Vehicle not found with code: " + staffDTO.getVehicleCode()));
+            existingStaff.setVehicle(vehicle);
         }
         staffDAO.save(existingStaff);
     }

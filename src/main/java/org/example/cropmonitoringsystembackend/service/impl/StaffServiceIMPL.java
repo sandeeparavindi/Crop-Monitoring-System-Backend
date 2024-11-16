@@ -54,7 +54,7 @@ public class StaffServiceIMPL implements StaffService {
         if (savedStaff == null) {
             throw new DataPersistException("Can't save Staff");
         }
-        vehicle.setStatus("out of service");
+        vehicle.setStatus("Out of service");
         vehicleDAO.save(vehicle);
     }
 
@@ -132,5 +132,18 @@ public class StaffServiceIMPL implements StaffService {
     public List<StaffDTO> searchStaff(String searchTerm) {
         List<Staff> members = staffDAO.findByIdOrFirstName(searchTerm);
         return mapping.convertToStaffListDTO(members);
+    }
+
+    @Override
+    public void returnVehicle(String staffId) {
+        Staff staff = staffDAO.findById(staffId)
+                .orElseThrow(() -> new StaffMemberNotFoundException("Staff not found with ID: " + staffId));
+        Vehicle vehicle = staff.getVehicle();
+        if (vehicle == null) {
+            throw new VehicleNotFoundException("No vehicle assigned to this staff member.");
+        }
+        vehicle.setStatus("Available");
+        vehicleDAO.save(vehicle);
+
     }
 }

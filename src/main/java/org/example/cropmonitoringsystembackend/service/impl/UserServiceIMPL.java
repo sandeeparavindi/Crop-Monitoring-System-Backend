@@ -77,6 +77,9 @@ public class UserServiceIMPL implements UserService {
 
     @Override
     public void deleteUser(String email) {
-
+        if (!userDAO.existsByEmail(email)) {
+            throw new NotFoundException("User email :" + email + "Not Found...");
+        }
+        userDAO.deleteByEmail(email);
     }
 }

@@ -12,6 +12,7 @@ import org.example.cropmonitoringsystembackend.util.AppUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,8 +25,8 @@ import java.util.List;
 public class FieldController {
 
     private final FieldService fieldService;
-
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole('MANAGER', 'SCIENTIST')")
+    @PostMapping(value = "/savefield", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveField(
             @RequestParam("fieldCode") String fieldCode,
             @RequestParam("fieldName") String fieldName,
@@ -87,6 +88,7 @@ public class FieldController {
         return fieldService.getSelectedField(code);
     }
 
+    @PreAuthorize("hasAnyRole('MANAGER', 'SCIENTIST')")
     @DeleteMapping(value = "/{code}")
     public ResponseEntity<Void> deleteSelectedField(@PathVariable("code") String code) {
         try {
@@ -98,6 +100,7 @@ public class FieldController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER', 'SCIENTIST')")
     @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/{fieldCode}")
     public ResponseEntity<Void> updateSelectedField(
             @PathVariable("fieldCode") String fieldCode,

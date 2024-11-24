@@ -48,5 +48,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
     }
 
+    @Override
+    public JWTAuthResponse signUp(SignUpRequest signUpRequest) {
+        UserDTO userDTO = UserDTO.builder()
+                .email(signUpRequest.getEmail())
+                .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                .role(signUpRequest.getRole())
+                .build();
+        User savedUser = securityDAO.save(mapper.map(userDTO, User.class));
 
+        // Generate tokens
+        String accessToken = jwtService.generateToken(savedUser);
+        String refreshToken = jwtService.refreshToken(savedUser);
+
+        // Return both tokens
+        return JWTAuthResponse.builder()
+                .token(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
 }

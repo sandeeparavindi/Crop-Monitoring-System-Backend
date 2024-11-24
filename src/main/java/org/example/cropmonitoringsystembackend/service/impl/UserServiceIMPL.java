@@ -53,7 +53,12 @@ public class UserServiceIMPL implements UserService {
 
     @Override
     public UserDTO saveUser(UserDTO userDTO) {
-
+        if (userDAO.existsByEmail(userDTO.getEmail())) {
+            throw new DublicateRecordException("This User " + userDTO.getEmail() + " already have an account.");
+        }
+        return modelMapper.map(userDAO.save(modelMapper.map(
+                userDTO, User.class)), UserDTO.class
+        );
     }
 
     @Override

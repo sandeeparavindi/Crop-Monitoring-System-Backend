@@ -10,6 +10,7 @@ import org.example.cropmonitoringsystembackend.service.StaffService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 public class StaffController {
     private final StaffService staffService;
 
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveStaffMember(@RequestBody StaffDTO staff) {
         if (staff == null){
@@ -42,6 +44,7 @@ public class StaffController {
         return staffService.getAllStaffs();
     }
 
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteSelectedMember(@PathVariable("id") String id) {
         try {
@@ -54,6 +57,7 @@ public class StaffController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateSelectedMember(
             @PathVariable("id") String id,

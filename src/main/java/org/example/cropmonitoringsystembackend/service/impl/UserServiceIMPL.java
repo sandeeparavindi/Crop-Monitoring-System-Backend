@@ -63,7 +63,16 @@ public class UserServiceIMPL implements UserService {
 
     @Override
     public void updateUser(String email, UserDTO userDTO) {
+        User existingUser = userDAO.findByEmailAndRole(email, userDTO.getRole());
 
+        if (existingUser.getPassword().isEmpty()) {
+            throw new NotFoundException("User email :" + email + "Not Found...");
+        }
+
+        existingUser.setPassword(userDTO.getPassword());
+        existingUser.setRole(userDTO.getRole());
+
+        userDAO.save(existingUser);
     }
 
     @Override

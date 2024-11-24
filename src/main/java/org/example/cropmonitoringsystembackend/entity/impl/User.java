@@ -29,7 +29,7 @@ public class User implements SuperEntity, UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         HashSet<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(
-                "Role_"+role.name()));
+                "ROLE_"+role.name()));
         return authorities;
     }
 

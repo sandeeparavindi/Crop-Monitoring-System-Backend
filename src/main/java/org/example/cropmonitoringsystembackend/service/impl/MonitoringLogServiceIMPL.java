@@ -60,4 +60,15 @@ public class MonitoringLogServiceIMPL implements MonitoringLogService {
         List<MonitoringLog> logs = monitoringLogDAO.findAll();
         return mapping.convertToMonitoringLogListDTO(logs);
     }
+
+    @Override
+    public void deleteMonitoringLog(String log_code) {
+        Optional<MonitoringLog> selectedLog = monitoringLogDAO.findById(log_code);
+        if (!selectedLog.isPresent()) {
+            throw new MonitoringLogNotFoundException(log_code);
+        } else {
+            monitoringLogDAO.deleteById(log_code);
+        }
+    }
+
 }

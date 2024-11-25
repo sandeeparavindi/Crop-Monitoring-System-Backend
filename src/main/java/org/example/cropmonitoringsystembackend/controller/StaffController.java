@@ -80,6 +80,7 @@ public class StaffController {
         return new ResponseEntity<>(staffDTOS, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     @PatchMapping(value = "/{id}/return-vehicle")
     public ResponseEntity<Void> returnVehicle(@PathVariable("id") String staffId) {
         try {

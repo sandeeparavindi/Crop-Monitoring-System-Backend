@@ -71,4 +71,38 @@ public class MonitoringLogServiceIMPL implements MonitoringLogService {
         }
     }
 
+    @Override
+    public void updateMonitoringLog(String log_code, MonitoringLogDTO logDTO) {
+        MonitoringLog existingLog = monitoringLogDAO.findById(log_code)
+                .orElseThrow(() -> new MonitoringLogNotFoundException(log_code));
+
+        if (logDTO.getLog_date() != null) {
+            existingLog.setLog_date(logDTO.getLog_date());
+        }
+        if (logDTO.getObservation() != null) {
+            existingLog.setObservation(logDTO.getObservation());
+        }
+        if (logDTO.getLog_image() != null) {
+            existingLog.setLog_image(logDTO.getLog_image());
+        }
+        if (logDTO.getFieldCode() != null) {
+            Field field = fieldDAO.findById(logDTO.getFieldCode())
+                    .orElseThrow(() -> new FieldNotFoundException("Field not found with code: " + logDTO.getFieldCode()));
+            existingLog.setField(field);
+        }
+
+        if (logDTO.getCropCode() != null) {
+            Crop crop = cropDAO.findById(logDTO.getCropCode())
+                    .orElseThrow(() -> new CropNotFoundException("Crop not found with code: " + logDTO.getCropCode()));
+            existingLog.setCrop(crop);
+        }
+
+        if (logDTO.getId() != null) {
+            Staff staff = staffDAO.findById(logDTO.getId())
+                    .orElseThrow(() -> new StaffMemberNotFoundException("Staff not found with ID: " + logDTO.getId()));
+            existingLog.setStaff(staff);
+        }
+        monitoringLogDAO.save(existingLog);
+    }
+
 }

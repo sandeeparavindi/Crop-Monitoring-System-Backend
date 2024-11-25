@@ -6,14 +6,12 @@ import lombok.NoArgsConstructor;
 import org.example.cropmonitoringsystembackend.customObj.MonitoringLogResponse;
 import org.example.cropmonitoringsystembackend.dto.SuperDTO;
 
-import java.util.Date;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class MonitoringLogDTO implements SuperDTO, MonitoringLogResponse {
     private String log_code;
-    private Date log_date;
+    private String log_date;
     private String Observation;
     private String log_image;
     private String fieldCode;

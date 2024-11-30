@@ -7,5 +7,5 @@ import org.example.cropmonitoringsystembackend.auth.response.JWTAuthResponse;
 public interface AuthenticationService {
     JWTAuthResponse signIn(SignInRequest signInRequest);
     JWTAuthResponse signUp(SignUpRequest signUpRequest);
-    JWTAuthResponse refreshToken(String accessToken);
+//    JWTAuthResponse refreshToken(String accessToken);
 }

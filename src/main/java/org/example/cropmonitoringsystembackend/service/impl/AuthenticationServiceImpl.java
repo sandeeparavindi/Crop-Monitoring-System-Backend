@@ -39,12 +39,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // Generate tokens
         String accessToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.refreshToken(user);
 
         // Return both tokens
         return JWTAuthResponse.builder()
                 .token(accessToken)
-                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -59,31 +57,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // Generate tokens
         String accessToken = jwtService.generateToken(savedUser);
-        String refreshToken = jwtService.refreshToken(savedUser);
 
-        // Return both tokens
         return JWTAuthResponse.builder()
                 .token(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-    }
-
-    @Override
-    public JWTAuthResponse refreshToken(String accessToken) {
-        String userName = jwtService.extractUserName(accessToken);
-//        if (!jwtService.isTokenValid(accessToken)) {
-//            throw new IllegalArgumentException("Invalid refresh token");
-//        }
-
-        // Generate a new access token
-        User user = userDAO.findByEmail(userName)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        String newAccessToken = jwtService.generateToken(user);
-
-        // Return the new access token and the same refresh token
-        return JWTAuthResponse.builder()
-                .token(newAccessToken)
-                .refreshToken(accessToken)
                 .build();
     }
 }

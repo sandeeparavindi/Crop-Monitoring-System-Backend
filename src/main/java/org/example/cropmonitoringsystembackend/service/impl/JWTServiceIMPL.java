@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -31,7 +30,7 @@ public class JWTServiceIMPL implements JWTService {
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("role",userDetails.getAuthorities());
         Date currentDate = new Date();
-        Date expiredDate = new Date(currentDate.getTime() + 1000 * 60 * 10); //10 minit
+        Date expiredDate = new Date(currentDate.getTime() + 1000 * 60 * 2); //10 minit
         String accessToken = Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername()) // set the "subject" (sub) claim of the JWT
@@ -48,11 +47,6 @@ public class JWTServiceIMPL implements JWTService {
     public boolean isTokenValid(String token, UserDetails userDetails) {
         String subject = extractClaims(token, Claims::getSubject);
         return subject.equals(userDetails.getUsername()) && !isExpired(token);
-    }
-
-    @Override
-    public String refreshToken(UserDetails userDetails) {
-        return refreshToken(new HashMap<>(),userDetails);
     }
 
     private Key getSignKey(){
@@ -73,17 +67,5 @@ public class JWTServiceIMPL implements JWTService {
     private boolean isExpired(String token){
         Date expiredDate = extractClaims(token, Claims::getExpiration);
         return expiredDate.before(new Date());
-    }
-
-    private String refreshToken(Map<String,Object> extractClaims, UserDetails userDetails){
-        extractClaims.put("role",userDetails.getAuthorities());
-        Date now = new Date();
-        Date expire = new Date(now.getTime() + 1000 * 600);
-        Date refreshExpire = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 1); // one day
-
-        return Jwts.builder().setClaims(extractClaims)
-                .setSubject(userDetails.getUsername())
-                .setExpiration(refreshExpire)
-                .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 }

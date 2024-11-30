@@ -30,7 +30,7 @@ public class JWTServiceIMPL implements JWTService {
         HashMap<String, Object> claims = new HashMap<>();
         claims.put("role",userDetails.getAuthorities());
         Date currentDate = new Date();
-        Date expiredDate = new Date(currentDate.getTime() + 1000 * 60 * 2); //10 minit
+        Date expiredDate = new Date(currentDate.getTime() + 1000 * 60 * 60 * 1);
         String accessToken = Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername()) // set the "subject" (sub) claim of the JWT
@@ -43,11 +43,22 @@ public class JWTServiceIMPL implements JWTService {
         return accessToken;
     }
 
-    @Override
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+//    @Override
+//    public boolean isTokenValid(String token, UserDetails userDetails) {
+//        String subject = extractClaims(token, Claims::getSubject);
+//        return subject.equals(userDetails.getUsername()) && !isExpired(token);
+//    }
+@Override
+public boolean isTokenValid(String token, UserDetails userDetails) {
+    try {
         String subject = extractClaims(token, Claims::getSubject);
         return subject.equals(userDetails.getUsername()) && !isExpired(token);
+    } catch (io.jsonwebtoken.ExpiredJwtException e) {
+        // Token is expired
+        return false;
     }
+}
+
 
     private Key getSignKey(){
         byte[] bytes = Decoders.BASE64.decode(jwtKey); //decode the base64-encoded jwt

@@ -137,5 +137,8 @@ public void saveStaff(StaffDTO staffDTO) {
         vehicle.setStatus("Available");
         vehicleDAO.save(vehicle);
 
+        staff.setVehicle(null);
+        staffDAO.save(staff);
+
     }
 }

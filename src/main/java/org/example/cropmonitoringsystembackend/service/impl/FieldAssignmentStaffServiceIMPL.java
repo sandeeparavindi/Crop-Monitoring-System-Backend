@@ -9,7 +9,6 @@ import org.example.cropmonitoringsystembackend.entity.impl.Field;
 import org.example.cropmonitoringsystembackend.entity.impl.FieldStaffAssignment;
 import org.example.cropmonitoringsystembackend.entity.impl.Staff;
 import org.example.cropmonitoringsystembackend.service.FieldAssignmentStaffService;
-import org.example.cropmonitoringsystembackend.util.Mapping;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class FieldAssignmentStaffServiceIMPL implements FieldAssignmentStaffService {
-    private final Mapping mapping;
     private final FieldStaffAssignmentDAO fieldStaffAssignmentDAO;
     private final FieldDAO fieldDAO;
     private final StaffDAO staffDAO;

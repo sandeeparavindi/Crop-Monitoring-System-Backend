@@ -9,8 +9,8 @@ import org.example.cropmonitoringsystembackend.dto.FieldStaffAssignmentStatus;
 @Data
 public class FieldStaffAssignmentDTO implements FieldStaffAssignmentStatus {
     private Long id;
-    private String fieldCode;  // For referencing the Field entity
-    private String staffId;    // For referencing the Staff entity
+    private String fieldCode;
+    private String staffId;
     private String assignedRole;
     private String assignmentDate;
 }

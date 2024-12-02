@@ -7,7 +7,6 @@ import org.example.cropmonitoringsystembackend.dao.StaffDAO;
 import org.example.cropmonitoringsystembackend.dto.impl.FieldStaffAssignmentDTO;
 import org.example.cropmonitoringsystembackend.entity.impl.Field;
 import org.example.cropmonitoringsystembackend.entity.impl.FieldStaffAssignment;
-import org.example.cropmonitoringsystembackend.entity.impl.MonitoringLog;
 import org.example.cropmonitoringsystembackend.entity.impl.Staff;
 import org.example.cropmonitoringsystembackend.service.FieldAssignmentStaffService;
 import org.example.cropmonitoringsystembackend.util.Mapping;

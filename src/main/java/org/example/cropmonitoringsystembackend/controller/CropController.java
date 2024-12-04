@@ -26,7 +26,7 @@ import java.util.List;
 public class CropController {
 
     private final CropService cropService;
-    private static final Logger logger = LoggerFactory.getLogger(FieldController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CropController.class);
 
     @PreAuthorize("hasAnyRole('MANAGER', 'SCIENTIST')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

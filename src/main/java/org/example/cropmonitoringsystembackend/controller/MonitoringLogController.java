@@ -13,7 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 @RestController
@@ -22,6 +23,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://127.0.0.1:5501")
 public class MonitoringLogController {
     private final MonitoringLogService monitoringLogService;
+    private static final Logger logger = LoggerFactory.getLogger(MonitoringLogController.class);
 
     @PreAuthorize("hasAnyRole('MANAGER', 'SCIENTIST')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,6 +37,7 @@ public class MonitoringLogController {
             @RequestParam("staffId") String id
     ) {
         try {
+            logger.info("Saving monitoring log with logCode: {}", logCode);
             String base64Image = AppUtil.toBase64(logImage.getBytes());
 
             MonitoringLogDTO logDTO = new MonitoringLogDTO();
@@ -48,13 +51,17 @@ public class MonitoringLogController {
 
             monitoringLogService.saveMonitoringLog(logDTO);
 
+            logger.info("Monitoring log with logCode: {} saved successfully", logCode);
             return new ResponseEntity<>(new FieldErrorResponse(0,
                     "Monitoring Log saved successfully"), HttpStatus.CREATED);
 
         } catch (DataPersistException e) {
+            logger.error("Error saving monitoring log with logCode: {}: {}", logCode, e.getMessage());
             return new ResponseEntity<>(new FieldErrorResponse(0,
                     "Can't save: " + e.getMessage()), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
+            logger.error("Internal server error when saving monitoring log with logCode: {}: {}",
+                    logCode, e.getMessage());
             e.printStackTrace();
             return new ResponseEntity<>(new FieldErrorResponse(0,
                     "Internal server error"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,11 +70,13 @@ public class MonitoringLogController {
 
     @GetMapping(value = "allLogs", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MonitoringLogDTO> getAllMonitoringLogs() {
+        logger.info("Fetching all monitoring logs");
         return monitoringLogService.getAllMonitoringLog();
     }
 
     @GetMapping()
     public ResponseEntity<List<MonitoringLogDTO>> searchMonitoringLogs(@RequestParam("searchTerm") String searchTerm) {
+        logger.info("Searching monitoring logs with searchTerm: {}", searchTerm);
         List<MonitoringLogDTO> logs = monitoringLogService.searchMonitoringLog(searchTerm);
         return new ResponseEntity<>(logs, HttpStatus.OK);
     }
@@ -84,6 +93,7 @@ public class MonitoringLogController {
             @RequestParam(value = "staffId", required = false) String id
     ) {
         try {
+            logger.info("Updating monitoring log with logCode: {}", logCode);
             MonitoringLogDTO logDTO = new MonitoringLogDTO();
 
             if (logDate != null) logDTO.setLog_date(logDate);
@@ -96,9 +106,10 @@ public class MonitoringLogController {
             if (id != null) logDTO.setId(id);
 
             monitoringLogService.updateMonitoringLog(logCode, logDTO);
-
+            logger.info("Monitoring log with logCode: {} updated successfully", logCode);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
+            logger.error("Error updating monitoring log with logCode: {}: {}", logCode, e.getMessage());
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -108,11 +119,15 @@ public class MonitoringLogController {
     @DeleteMapping(value = "/{logCode}")
     public ResponseEntity<Void> deleteMonitoringLog(@PathVariable("logCode") String logCode) {
         try {
+            logger.info("Deleting monitoring log with logCode: {}", logCode);
             monitoringLogService.deleteMonitoringLog(logCode);
+            logger.info("Monitoring log with logCode: {} deleted successfully", logCode);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (MonitoringLogNotFoundException e) {
+            logger.error("Monitoring log with logCode: {} not found: {}", logCode, e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            logger.error("Error deleting monitoring log with logCode: {}: {}", logCode, e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

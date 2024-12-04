@@ -38,7 +38,7 @@ public void saveStaff(StaffDTO staffDTO) {
         }
 
         staff.setVehicle(vehicle);
-        vehicle.setStatus("out of service");
+        vehicle.setStatus("Out of service");
         vehicleDAO.save(vehicle);
     } else {
         staff.setVehicle(null);
@@ -117,7 +117,7 @@ public void saveStaff(StaffDTO staffDTO) {
             Vehicle vehicle = vehicleDAO.findById(staffDTO.getVehicleCode())
                     .orElseThrow(() -> new DataPersistException("Invalid Vehicle code"));
 
-            vehicle.setStatus("out of service");
+            vehicle.setStatus("Out of service");
             vehicleDAO.save(vehicle);
             existingStaff.setVehicle(vehicle);
         } else {

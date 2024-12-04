@@ -48,6 +48,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JWTAuthResponse signUp(SignUpRequest signUpRequest) {
+        if (!signUpRequest.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
+        if (userDAO.existsByEmail(signUpRequest.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
         UserDTO userDTO = UserDTO.builder()
                 .email(signUpRequest.getEmail())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))

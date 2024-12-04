@@ -15,10 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class CropDTO implements CropStatus, CropResponse {
-    @NotBlank(message = "Crop crop Cannot Be Null")
+    @NotBlank(message = "Crop code Cannot Be Null")
     private String cropCode;
     @NotBlank(message = "Crop Name Cannot Be Null")
-    @Pattern(regexp = "^[A-Za-z0-9]", message = "Common Name not valid")
+    @Pattern(regexp = "^[A-Z][a-z]{2,}$", message = "Start with a capital letter " +
+            "and have at least 3 characters, only alphabets allowed.")
     private String cropCommonName;
     @NotBlank(message = "Crop Scientific Name Cannot Be Null")
     @Pattern(regexp = "^[A-Za-z0-9]", message = "Scientific Name not valid")

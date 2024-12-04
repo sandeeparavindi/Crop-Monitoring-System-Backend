@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping(value = "api/v1/fields")
@@ -25,6 +27,8 @@ import java.util.List;
 public class FieldController {
 
     private final FieldService fieldService;
+    private static final Logger logger = LoggerFactory.getLogger(FieldController.class);
+
     @PreAuthorize("hasAnyRole('MANAGER', 'SCIENTIST')")
     @PostMapping(value = "/savefield", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveField(
@@ -35,20 +39,14 @@ public class FieldController {
             @RequestParam("fieldImage1") MultipartFile fieldImage1,
             @RequestParam("fieldImage2") MultipartFile fieldImage2,
             HttpServletRequest request
-
     ) {
-        System.out.println("Content-Type: " + request.getContentType());
+        logger.info("Received request to save field. Content-Type: {}", request.getContentType());
         request.getHeaderNames().asIterator().forEachRemaining(header ->
-                System.out.println(header + ": " + request.getHeader(header)));
+                logger.debug("Header: {} = {}", header, request.getHeader(header))
+        );
 
         try {
-            System.out.println("FieldCode: " + fieldCode);
-            System.out.println("FieldName: " + fieldName);
-            System.out.println("FieldLocation: " + fieldLocation);
-            System.out.println("ExtentSize: " + extentSize);
-            System.out.println("FieldImage1: " + fieldImage1.getOriginalFilename());
-            System.out.println("FieldImage2: " + fieldImage2.getOriginalFilename());
-
+            logger.info("Saving field with FieldCode: {}, FieldName: {}", fieldCode, fieldName);
             byte[] byteFieldImage1 = fieldImage1.getBytes();
             String base64Image1 = AppUtil.toBase64(byteFieldImage1);
 
@@ -64,15 +62,17 @@ public class FieldController {
             fieldDTO.setFieldImage2(base64Image2);
 
             fieldService.saveField(fieldDTO);
+            logger.info("Field saved successfully with code: {}", fieldCode);
 
             return new ResponseEntity<>(new FieldErrorResponse(0,
                     "Field saved successfully"), HttpStatus.CREATED);
 
         } catch (DataPersistException e) {
+            logger.error("Failed to save field: {}", e.getMessage(), e);
             return new ResponseEntity<>(new FieldErrorResponse(0,
                     "Failed to save field: " + e.getMessage()), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Internal server error: ", e);
             return new ResponseEntity<>(new FieldErrorResponse(0,
                     "Internal server error"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -80,23 +80,29 @@ public class FieldController {
 
     @GetMapping(value = "allFields", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FieldDTO> getAllFields() {
+        logger.info("Fetching all fields.");
         return fieldService.getAllFields();
     }
 
     @GetMapping(value = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
     public FieldResponse getSelectedField(@PathVariable("code") String code) {
+        logger.info("Fetching field with code: {}", code);
         return fieldService.getSelectedField(code);
     }
 
     @PreAuthorize("hasAnyRole('MANAGER', 'SCIENTIST')")
     @DeleteMapping(value = "/{code}")
     public ResponseEntity<Void> deleteSelectedField(@PathVariable("code") String code) {
+        logger.info("Attempting to delete field with code: {}", code);
         try {
             fieldService.deleteField(code);
+            logger.info("Field deleted successfully.", code);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (FieldNotFoundException e) {
+            logger.warn("Field with code {} not found: {}", code, e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            logger.error("Error deleting field with code {}: {}", code, e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -110,6 +116,7 @@ public class FieldController {
             @RequestParam(value = "fieldImage1", required = false) MultipartFile fieldImage1,
             @RequestParam(value = "fieldImage2", required = false) MultipartFile fieldImage2
     ) {
+        logger.info("Updating field with code: {}", fieldCode);
         try {
             FieldDTO fieldDTO = new FieldDTO();
 
@@ -119,17 +126,19 @@ public class FieldController {
 
             if (fieldImage1 != null && !fieldImage1.isEmpty()) {
                 fieldDTO.setFieldImage1(AppUtil.toBase64(fieldImage1.getBytes()));
+                logger.info("Field image 1 updated for field code: {}", fieldCode);
             }
             if (fieldImage2 != null && !fieldImage2.isEmpty()) {
                 fieldDTO.setFieldImage2(AppUtil.toBase64(fieldImage2.getBytes()));
+                logger.info("Field image 2 updated for field code: {}", fieldCode);
             }
 
             fieldService.updateField(fieldCode, fieldDTO);
+            logger.info("Successfully updated field with code: {}", fieldCode);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error updating field with code {}: {}", fieldCode, e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

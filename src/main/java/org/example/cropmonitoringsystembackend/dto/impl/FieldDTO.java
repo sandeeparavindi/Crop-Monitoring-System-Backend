@@ -1,5 +1,7 @@
 package org.example.cropmonitoringsystembackend.dto.impl;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class FieldDTO  implements FieldStatus, FieldResponse {
+    @NotBlank(message = "Field Code Cannot Be Null")
     private String fieldCode;
+    @NotBlank(message = "Field Name Cannot Be Null")
+    @Pattern(regexp = "^[A-Za-z0-9]", message = "Name not valid")
     private String fieldName;
+    @NotBlank(message = "Field Location Cannot Be Null")
+    @Pattern(regexp = "/^[A-Z]/", message = "Location not valid")
     private String fieldLocation;
     private Double extentSize;
     private String fieldImage1;

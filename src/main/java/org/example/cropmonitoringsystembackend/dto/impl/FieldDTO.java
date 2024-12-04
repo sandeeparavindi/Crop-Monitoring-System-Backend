@@ -20,7 +20,7 @@ public class FieldDTO  implements FieldStatus, FieldResponse {
     @Pattern(regexp = "^[A-Za-z0-9]", message = "Name not valid")
     private String fieldName;
     @NotBlank(message = "Field Location Cannot Be Null")
-    @Pattern(regexp = "/^[A-Z]/", message = "Location not valid")
+    @Pattern(regexp = "^[A-Z]", message = "Location not valid")
     private String fieldLocation;
     private Double extentSize;
     private String fieldImage1;

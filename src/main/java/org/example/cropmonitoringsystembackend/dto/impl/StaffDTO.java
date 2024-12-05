@@ -47,7 +47,7 @@ public class StaffDTO implements StaffStatus, StaffResponse {
     @Pattern(regexp = "^[0-9]{10}$", message = "contact number not valid")
     private String contactNo;
     @NotBlank(message = "Staff email Cannot Be Null")
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@gmail\\.com$", message = "email not valid")
+    @Pattern(regexp = "/^[A-Za-z0-9._%+-]+@gmail\\.com$/", message = "email not valid")
     private String email;
     private String vehicleCode;
     private List<FieldDTO> fieldList = new ArrayList<>();

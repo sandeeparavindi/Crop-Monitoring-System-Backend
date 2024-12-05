@@ -48,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JWTAuthResponse signUp(SignUpRequest signUpRequest) {
-        if (!signUpRequest.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {
+        if (!signUpRequest.getEmail().matches("/^[A-Za-z0-9._%+-]+@gmail\\.com$/")) {
             throw new IllegalArgumentException("Invalid email format");
         }
 
